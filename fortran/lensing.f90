@@ -39,6 +39,7 @@
     use Precision
     use results
     use constants, only : const_pi, const_twopi, const_fourpi
+    use config
     implicit none
     integer, parameter :: lensing_method_curv_corr=1,lensing_method_flat_corr=2, &
         lensing_method_harmonic=3
@@ -209,9 +210,10 @@
             CTE(l) =  CL%Cl_scalar(l,C_Cross)*fac
         end do
         if (Cphil3(10) > lensing_sanity_check_amplitude) then
-            write (*,*) 'You need to normalize realistically to use lensing.'
-            write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            stop
+            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
+            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
+            global_error_flag = 1
+            return
         end if
         if (lmax > CP%Max_l) then
             l=CP%Max_l
@@ -227,7 +229,9 @@
                 CEE(l) =  highL_CL_template(l, C_E)*fac2 *sc
                 CTE(l) =  highL_CL_template(l, C_Cross)*fac2*sc
                 if (Cphil3(CP%Max_l+1) > 1e-7) then
-                    call MpiStop('You need to normalize the high-L template so it is dimensionless')
+                    if (FeedbackLevel>0) write(*,*) 'You need to normalize the high-L template so it is dimensionless'
+                    global_error_flag = 1
+                    return
                 end if
             end do
         end if
@@ -571,9 +575,10 @@
         end do
 
         if (Cphil3(10) > 1e-7) then
-            write (*,*) 'You need to normalize realistically to use lensing.'
-            write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            stop
+            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
+            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
+            global_error_flag = 1
+            return
         end if
 
         lens_contrib=0
@@ -733,9 +738,10 @@
         end do
 
         if (Cphil3(10) > 1e-7) then
-            write (*,*) 'You need to normalize realistically to use lensing.'
-            write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            stop
+            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
+            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
+            global_error_flag = 1
+            return
         end if
 
         !$OMP PARALLEL DO DEFAULT(SHARED), &
@@ -917,9 +923,10 @@
 
         RR = RR/2/const_fourpi
         if (RR > 1e-5) then
-            write (*,*) 'You need to normalize realistically to use lensing.'
-            write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            call MpiStop('Lensing error')
+            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
+            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
+            global_error_flag = 1
+            return
         end if
         if (maxl > lmax_donelnfa) then
             !Get ln factorials

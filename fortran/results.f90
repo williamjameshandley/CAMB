@@ -1881,7 +1881,7 @@
         !Tight coupling switch time when k/opacity is smaller than 1/(tau*opacity)
     end do
 
-    if (CP%Reion%Reionization .and. (this%xe(nthermo) < 0.999d0)) then
+    if (CP%Reion%Reionization .and. (this%xe(nthermo) < 0.999d0) .and. FeedbackLevel > 0) then
         write(*,*)'Warning: xe at redshift zero is < 1'
         write(*,*) 'Check input parameters an Reionization_xe'
         write(*,*) 'function in the Reionization module'
