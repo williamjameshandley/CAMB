@@ -22,6 +22,7 @@
     ! (min steps useful to stop wrong results on periodic or sharp functions)
     use iso_c_binding
     use MiscUtils
+    use config, only : FeedbackLevel
     class(*) :: obj
     real(dl), external :: fin !a class function
     procedure(obj_function), pointer :: f
@@ -82,8 +83,8 @@
 
     Integrate_Romberg=g0
     if (i > max_it .and. abs(error) > tol)  then
-        write(*,*) 'Warning: Integrate_Romberg failed to converge; '
-        write (*,*)'integral, error, tol:', Integrate_Romberg,error, tol
+        if (FeedbackLevel>0) write(*,*) 'Warning: Integrate_Romberg failed to converge; '
+        if (FeedbackLevel>0) write (*,*)'integral, error, tol:', Integrate_Romberg,error, tol
     end if
 
     end function Integrate_Romberg
