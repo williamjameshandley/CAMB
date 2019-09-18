@@ -699,6 +699,7 @@ class CAMBdata(F2003Class):
         PK = np.empty((nz, nk))
         if nonlinear:
             CAMBdata_GetNonLinearMatterPower(byref(self), PK, byref(var1), byref(var2), byref(hubble_units))
+            config.check_global_error('get_[non]linear_matter_power_spectrum')
         else:
             CAMBdata_GetLinearMatterPower(byref(self), PK, byref(var1), byref(var2), byref(hubble_units))
 
@@ -1007,7 +1008,7 @@ class CAMBdata(F2003Class):
         return res
 
     def get_cmb_unlensed_scalar_array_dict(self, params=None, lmax=None, CMB_unit=None, raw_cl=False):
-        """
+        r"""
         Get all unlensed auto and cross power spectra, including any custom source functions set using :meth:`.model.CAMBparams.set_custom_scalar_sources`.
 
         :param params: optional :class:`~.model.CAMBparams` instance with parameters to use. If None, must have
