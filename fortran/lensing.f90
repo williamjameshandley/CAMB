@@ -94,6 +94,12 @@
 
     end subroutine CorrFuncFullSky
 
+    subroutine AmplitudeError
+
+    call GlobalError('You need to normalize realistically to use lensing. ' &
+        //'See http://cosmocoffee.info/viewtopic.php?t=94')
+
+    end subroutine AmplitudeError
 
     subroutine CorrFuncFullSkyImpl(State,lmin,lmax)
     !Accurate curved sky correlation function method
@@ -208,9 +214,7 @@
             CTE(l) =  CL%Cl_scalar(l,C_Cross)*fac
         end do
         if (Cphil3(10) > lensing_sanity_check_amplitude) then
-            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
-            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            call GlobalError('You need to normalize realistically to use lensing',1)
+            call AmplitudeError()
             return
         end if
         if (lmax > CP%Max_l) then
@@ -573,9 +577,7 @@
         end do
 
         if (Cphil3(10) > 1e-7) then
-            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
-            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            call GlobalError('You need to normalize realistically to use lensing',1)
+            call AmplitudeError()
             return
         end if
 
@@ -736,9 +738,7 @@
         end do
 
         if (Cphil3(10) > 1e-7) then
-            if (FeedbackLevel>0) write (*,*) 'You need to normalize realistically to use lensing.'
-            if (FeedbackLevel>0) write (*,*) 'see http://cosmocoffee.info/viewtopic.php?t=94'
-            call GlobalError('You need to normalize realistically to use lensing',1)
+            call AmplitudeError()
             return
         end if
 

@@ -1,5 +1,6 @@
 set -e
 
+gfortran --version
 python --version
 python setup.py install
 python -c "import camb; print(camb.__version__)"
@@ -23,7 +24,7 @@ then
 # pushd test_dir
 # pip install --index-url https://test.pypi.org/simple/ $CAMB_PACKAGE_NAME
 # python -c "import camb; print(camb.__version__)"
-# python -m unittest camb_tests.camb_test
+# python -m unittest tests.camb_test
 # pip uninstall -y $CAMB_PACKAGE_NAME
 # popd
 fi

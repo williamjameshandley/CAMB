@@ -20,12 +20,14 @@ import sys
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, '../..')
+import camb
 
 # -- General configuration ------------------------------------------------
 
 nitpicky = True
 
-#Prevent spurious errors for every field ivar (not sure why..)
+
+# Prevent spurious errors for every field ivar (not sure why..)
 def on_missing_reference(app, env, node, contnode):
     if node['reftype'] == 'obj':
         return contnode
@@ -48,7 +50,7 @@ extensions = [
     'sphinx.ext.mathjax'
 ]
 
-intersphinx_mapping = {'python': ('https://docs.python.org/2', None),
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                        'numpy': ('https://docs.scipy.org/doc/numpy/', None),
                        'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
                        'matplotlib': ('https://matplotlib.org/', None)}
@@ -73,8 +75,6 @@ master_doc = 'index'
 project = u'Code for Anisotropies in the Microwave Background (CAMB)'
 copyright = u'Antony Lewis'
 author = u'Antony Lewis'
-
-import camb
 
 version = camb.__version__
 release = camb.__version__
